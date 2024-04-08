@@ -14,6 +14,8 @@ import models as model_zoo
 import gc
 import argparse
 import os
+import time
+import torch
 from pathlib import Path
 from fuxictr.pytorch.models import MultiTaskModel, BaseModel
 
@@ -59,12 +61,21 @@ if __name__ == '__main__':
     model.count_parameters() # print number of parameters used in model
 
     train_gen, valid_gen = H5DataLoader(feature_map, stage='train', **params).make_iterator()
+
+    start_time = time.time()
     model.fit(train_gen, validation_data=valid_gen, **params)
+    gpu_vram = torch.cuda.max_memory_allocated(device=None)
 
     logging.info('****** Validation evaluation ******')
     valid_result = model.evaluate(valid_gen)
     del train_gen, valid_gen
     gc.collect()
+
+    end_time = time.time()
+    trainval_minutes = (end_time - start_time) / 60.0
+    print(f"GPU VRAM: {gpu_vram}")
+    print(f"Total training + validation time, excluding test time: {trainval_minutes} minutes.")
+    print(f"validation performance: {valid_result}")
     
     logging.info('******** Test evaluation ********')
     test_gen = H5DataLoader(feature_map, stage='test', **params).make_iterator()
@@ -78,3 +89,5 @@ if __name__ == '__main__':
             .format(datetime.now().strftime('%Y%m%d-%H%M%S'), 
                     ' '.join(sys.argv), experiment_id, params['dataset_id'],
                     "N.A.", print_to_list(valid_result), print_to_list(test_result)))
+
+    print(f"test performance: {test_result}")

@@ -21,11 +21,9 @@ MerRec:
   test_data: ./data/MerRec/test.csv
   min_categr_count: 1
   feature_cols:
-    [ { name: ['user_id', 'item_id',
-              'item_add_to_cart_tap', 'offer_make', 'buy_start',
-              'buy_comp', 'c0_id', 'c1_id', 'c2_id', 'brand_id',
-              'item_condition_id', 'size_id', 'shipper_id',
-              'hist_1', 'hist_2', 'hist_3', 'hist_4', 'hist_5', 'hist_6', 'hist_7'
+    [ { name: ['user_id', 'item_add_to_cart_tap', 'offer_make', 'buy_start', 'buy_comp',
+              'c0_id', 'c1_id', 'c2_id', 'brand_id', 'item_condition_id', 'size_id', 'shipper_id',
+              'hist_1', 'hist_2', 'hist_3', 'hist_4', 'hist_5', 'hist_6', 'hist_7',
               'sequence_id', 'session_id', 'product_id', 'color'],
         active: True, dtype: str, type: categorical },
       { name: ['price'],
