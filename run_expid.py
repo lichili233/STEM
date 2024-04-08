@@ -83,7 +83,9 @@ if __name__ == '__main__':
     if test_gen:
       test_result = model.evaluate(test_gen)
     
-    result_filename = os.path.join('results',Path(args['config']).name.replace(".yaml", "") + '.csv')
+    result_dir = 'results'
+    os.makedirs(result_dir, exist_ok=True)
+    result_filename = os.path.join(result_dir, Path(args['config']).name.replace(".yaml", "") + '.csv')
     with open(result_filename, 'a+') as fw:
         fw.write(' {},[command] python {},[exp_id] {},[dataset_id] {},[train] {},[val] {},[test] {}\n' \
             .format(datetime.now().strftime('%Y%m%d-%H%M%S'), 
